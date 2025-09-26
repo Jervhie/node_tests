@@ -48,6 +48,11 @@ const getCurrentTime = () => {
   return timeString;
 }
 
+app.get('/', (req, res, next) => {
+  console.log("Timestamp Microservice");
+  next();
+});
+
 // Timestamp Middlewares
 app.get('/api/:date?', (req, res) => {
   let givenDate = req.params.date;
