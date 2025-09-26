@@ -7,6 +7,16 @@ if (!process.env.DISABLE_XORIGIN) {
   app.use(function(req, res, next) {
     var allowedOrigins = ['https://narrow-plane.gomix.me', 'https://www.freecodecamp.com'];
     var origin = req.headers.origin || '*';
+    // log all information upon request
+    console.log({
+      method: req.method,
+      headers: req.headers,
+      ip: req.ip,
+      path: req.path,
+      params: req.params,
+      query: req.query,
+      body: req.body || "No body"
+    });
     if(!process.env.XORIG_RESTRICT || allowedOrigins.indexOf(origin) > -1){
          console.log(origin);
          res.setHeader('Access-Control-Allow-Origin', origin);
