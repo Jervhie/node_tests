@@ -29,10 +29,41 @@ app.use(function(err, req, res, next) {
       .type('txt')
       .send(err.message || 'SERVER ERROR');
   }  
-})
+});
+
+// helpers
+const getCurrentTime = () => {
+  let currentTime = new Date();
+  let timeString = `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`;
+  return timeString;
+}
+
+// Timestamp Middlewares
+app.get('/api/:date?', (req, res) => {
+  let givenDate = req.params.date;
+  if(!givenDate) {
+    res.json({
+      unix: getCurrentTime(),
+      utc: getCurrentTime()
+    })
+  };
+
+  if(new Date(givenDate) === "Invalid Date"){
+    res.json({ error : "Invalid Date" }); 
+  };
+
+  let date = {
+    unix: new Date(givenDate).getTime(),
+    utc: new Date(givenDate).toUTCString()
+  }
+
+  res.json(date);
+});
+
+// console.log("Current Time: ", getCurrentTime());
 
 //Listen on port set in environment variable or default to 3000
 const listener = app.listen(process.env.PORT || 3000, function () {
-  console.log("Node.js listening on port " + listener.address().port);
+  console.log("Listening on port " + listener.address().port);
 });
 
